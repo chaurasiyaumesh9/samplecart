@@ -1,0 +1,14 @@
+{
+  "name": "e-cart",
+  "main": "server.js",
+  "dependencies": {
+    "app-root-path": "^1.0.0",
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.0",
+    "ejs": "^2.4.1",
+    "express": "~4.0.0",
+    "express-session": "~1.0.0",
+    "method-override": "~1.0.0",
+    "morgan": "~1.0.0"
+  }
+}
