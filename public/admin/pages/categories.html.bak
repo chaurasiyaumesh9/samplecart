@@ -34,7 +34,7 @@
 	 	<a class="btn btn-primary" href="#/categories/add-new">
 	 		Add New Category
 	 	</a>
-		<button class="btn btn-danger" ng-show="showDelete"> Delete Categorie(s) </button>
+		<button class="btn btn-danger"> Delete Categorie(s) </button>
 	 </div>
 
  </body>

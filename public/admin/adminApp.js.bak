@@ -31,7 +31,6 @@ adminApp.controller('productsCtrl', function($scope){
 
 adminApp.controller('categoriesCtrl', function($scope, $http){
 	$scope.message = "Manage Categories";
-	$scope.showDelete = false;
 	loadRemoteData();
 
 	function loadRemoteData(){
@@ -53,7 +52,7 @@ adminApp.controller('categoriesCtrl', function($scope, $http){
         });
 		$scope.toggleDelete();
     };
-	
+	$scope.showDelete = false;
 
 	$scope.toggleDelete = function(){
 		for ( var i=0; i< $scope.categories.length; i++ )
