@@ -31,7 +31,7 @@ app.set('view engine','ejs');
 app.set('view cache', false);
 
 
-app.get('/admin/categories', function(req, res){
+app.get('*/categories', function(req, res){
 	
 	getCategories( req, res );
 	
@@ -42,24 +42,12 @@ app.post('/admin/categories', function(req, res){
 	addCategory( req, res );
 });
 
-/*
-app.get('/admin', function(req, res){
-	res.render('admin');
+app.delete('/admin/categories/:id', function(req, res){
+	deleteCategories( req, res );
+	//res.json({});
 });
 
 
-
-
-app.get('/admin/categories/add-new', function(req, res){
-	
-	res.render('add-new-category');
-	
-});
-
-app.get('/admin/products', function(req, res){
-	res.render('products');
-});
-*/
 
 app.listen(port, function(){
 	console.log('listening @ port : ' + port);
@@ -92,6 +80,22 @@ function addCategory(req, res){
 				console.log( results);
 			}else{
 				console.log('Error while performing the query..check function addCategory() for more details..');
+			}
+			conn.release();
+         });
+	});
+} 
+
+function deleteCategories(req, res){
+	pool.getConnection( function(err, conn){
+		conn.query("delete from categories where id=" + req.params.id, function(err, results) {
+             if (!err)
+			{
+				//res.render('categories', { categories: results });
+				res.json({});
+				//res.redirect('/admin/categories');
+			}else{
+				console.log('Error while performing the query..check function deleteCategories() for more details..');
 			}
 			conn.release();
          });

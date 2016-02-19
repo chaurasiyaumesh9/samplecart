@@ -32,6 +32,8 @@ adminApp.controller('productsCtrl', function($scope){
 adminApp.controller('categoriesCtrl', function($scope, $http){
 	$scope.message = "Manage Categories";
 	$scope.showDelete = false;
+	$scope.deletionSuccess = false;
+	$scope.deleteCount = 0;
 	loadRemoteData();
 
 	function loadRemoteData(){
@@ -47,33 +49,52 @@ adminApp.controller('categoriesCtrl', function($scope, $http){
 		});
 	}
 
+	$scope.deleteCategories = function(){
+		var checked = getCheckedCategories();
+		
+		for ( var i=0; i<checked.length ;i++ )
+		{ 
+			$http.delete('/admin/categories/' + checked[i].id).success( function(response){
+				loadRemoteData();
+				$scope.deleteCount++;
+			});
+		}
+		$scope.deletionSuccess = true;
+	}
+
 	 $scope.checkAll = function () {
         angular.forEach($scope.categories, function (category) {
             category.selected = $scope.selectAll;
         });
-		$scope.toggleDelete();
+		 toggleDeleteButton();
     };
 	
-
-	$scope.toggleDelete = function(){
-		for ( var i=0; i< $scope.categories.length; i++ )
-		{
-			if ( $scope.categories[i].selected )
-			{
-				$scope.showDelete = true;
-				break;
-			}
-		}
-		
-	}
 	 $scope.checkIndividual = function ( category ) {
-		 if ( !category.selected )
+		 if ( getCheckedCategories().length < $scope.categories.length )
 		 {
 			$scope.selectAll = false;
 		 }
-		 $scope.toggleDelete();
+		toggleDeleteButton();		
     };
+	function toggleDeleteButton(){
+		if ( getCheckedCategories().length >0 )
+		 {
+			$scope.showDelete = true;
+		 }else{
+			$scope.showDelete = false;
+		 }
+	}
 
-	
+	function getCheckedCategories(){
+		var arr = [];
+		for (var i=0; i<$scope.categories.length ;i++ )
+		{
+			if ( $scope.categories[i].selected )
+			{
+				arr.push( $scope.categories[i] );
+			}	
+		}
+		return arr;
+	}
 
 });

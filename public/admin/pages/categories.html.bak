@@ -14,6 +14,9 @@
  	</div>
 	
 	<div class="container">
+		<div class="alert alert-danger" ng-show="deletionSuccess">
+		  <strong>{{ deleteCount }}</strong> Record(s) deleted successfully!
+		</div>
 		<table class="table table-stripped">
 			<thead>
 				<tr>
@@ -34,7 +37,7 @@
 	 	<a class="btn btn-primary" href="#/categories/add-new">
 	 		Add New Category
 	 	</a>
-		<button class="btn btn-danger"> Delete Categorie(s) </button>
+		<button class="btn btn-danger" ng-disabled="!showDelete" ng-click="deleteCategories()"> Delete Categorie(s) </button>
 	 </div>
 
  </body>
