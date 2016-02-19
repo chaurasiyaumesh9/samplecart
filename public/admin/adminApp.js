@@ -15,12 +15,13 @@ adminApp.config(function($routeProvider, $locationProvider) {
 			templateUrl : 'pages/categories.html',
 			controller: "categoriesCtrl"
 		})
-		.when('/categories/:id', {
-			templateUrl : 'pages/edit-category.html',
-			controller: "categoriesCtrl"
-		})
+
 		.when('/categories/add-new', {
 			templateUrl : 'pages/add-new-category.html',
+			controller: "categoriesCtrl"
+		})
+		.when('/categories/:id', {
+			templateUrl : 'pages/edit-category.html',
 			controller: "categoriesCtrl"
 		});
 
@@ -33,16 +34,37 @@ adminApp.controller('productsCtrl', function($scope){
 	$scope.message = "Manage Your Products";
 });
 
-adminApp.controller('categoriesCtrl', function($scope, $http){
+adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams){
 	$scope.message = "Manage Categories";
 	$scope.showDelete = false;
 	$scope.deletionSuccess = false;
+	$scope.updationSuccess = false;
 	$scope.deleteCount = 0;
-	loadRemoteData();
+	var categoryId = -1;
 
-	function loadRemoteData(){
+	if ( $routeParams.id )
+	{
+		categoryId = $routeParams.id; // check if in edit mode
+		//console.log('categoryId :',categoryId);
+		getCategoryById( categoryId );
+	}
+	getAllCategories();
+
+	function getAllCategories(){
 		$http.get('/admin/categories').success( function( response ){
 			$scope.categories = response;
+		});
+	}
+
+	function getCategoryById( id ){
+		$http.get('/admin/categories/' + id  ).success( function( response ){
+			$scope.category = response;
+		});
+	}
+
+	$scope.updateCategory = function( id ){
+		$http.put('/admin/categories/' + id, $scope.category  ).success( function( response ){
+			$scope.updationSuccess = true;
 		});
 	}
 
@@ -60,7 +82,7 @@ adminApp.controller('categoriesCtrl', function($scope, $http){
 		for ( var i=0; i<checked.length ;i++ )
 		{ 
 			$http.delete('/admin/categories/' + checked[i].id).success( function(response){
-				loadRemoteData();
+				getAllCategories();
 				$scope.deleteCount++;
 			});
 		}

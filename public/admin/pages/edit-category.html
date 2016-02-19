@@ -9,22 +9,22 @@
  <body>
  	<div class="container">
  		<div class="jumbotron text-center">
- 			 <h1> Edit Category  </h1>
+ 			 <h1> Edit Category {{ currentCategory }}  </h1>
  		</div>
  	</div>
 	
 	<div class="container">
-		<div class="alert alert-success" ng-show="success">
-		  <strong>Success!</strong> Changes done successfully!
+		<div class="alert alert-success" ng-show="updationSuccess">
+		  <strong>Success!</strong> Category updated successfully!
 		</div>
-		<form ng-submit="updateCategory()" method="POST" role="form">
+		<form ng-submit="updateCategory( category.id )" method="POST" role="form">
 			<div class="form-group">
 				<label for="name"> Category Name : </label>
-				<input type="text" name="name" id="name" class="form-control" ng-model="category.name">
+				<input type="text" name="name" id="name" class="form-control" ng-model="category.name" ng-disabled="true">
 			</div>
 			<div class="form-group">
 				<label for="url"> Category URL : </label>
-				<input type="text" name="url" id="url" class="form-control" ng-model="category.url">
+				<input type="text" name="url" id="url" class="form-control" ng-model="category.url" ng-disabled="true">
 			</div>
 			<div class="form-group">
 				<label for="keywords"> keywords : </label>
