@@ -47,7 +47,6 @@ adminApp.controller('categoriesCtrl', function($scope, $http){
 	}
 
 	$scope.addNewCategory = function(){
-		console.log( $scope.category );
 		$http.post('/admin/categories',$scope.category).success( function(response){
 			$scope.success = true;
 			$scope.category = {};

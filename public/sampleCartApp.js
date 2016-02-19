@@ -16,7 +16,7 @@ adminApp.controller('sampleCartAppCtrl', function($scope, $http){
 	loadRemoteData();
 
 	function loadRemoteData(){
-		$http.get('/admin/categories').success( function( response ){
+		$http.get('/categories').success( function( response ){
 			$scope.categories = response;
 		});
 	}

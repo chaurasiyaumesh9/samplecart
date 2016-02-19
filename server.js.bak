@@ -32,9 +32,13 @@ app.set('view cache', false);
 
 
 app.get('/categories', function(req, res){
-	
+	getActiveCategories( req, res );
+});
+
+/* ----------- /admin for backend Requests ------------*/
+
+app.get('/admin/categories', function(req, res){
 	getCategories( req, res );
-	
 });
 
 app.post('/admin/categories', function(req, res){
@@ -46,12 +50,27 @@ app.delete('/admin/categories/:id', function(req, res){
 	deleteCategories( req, res );
 	//res.json({});
 });
-
+/* ----------- ------- ------------*/
 
 
 app.listen(port, function(){
 	console.log('listening @ port : ' + port);
 });
+
+function getActiveCategories(req, res){
+	pool.getConnection( function(err, conn){
+		conn.query("select * from categories where active=1", function(err, results) {
+             if (!err)
+			{
+				//res.render('categories', { categories: results });
+				res.json( results );
+			}else{
+				console.log('Error while performing the query..check function getCategories() for more details..');
+			}
+			conn.release();
+         });
+	});
+}
 
 
 function getCategories(req, res){
@@ -70,8 +89,9 @@ function getCategories(req, res){
 }
 
 function addCategory(req, res){
+	console.log('addCategory');
 	pool.getConnection( function(err, conn){
-		conn.query("Insert into categories(name, keywords, active ) values('"+req.body.name+"', '"+req.body.keywords+"', "+req.body.active+")", function(err, results) {
+		conn.query("Insert into categories(name, keywords, active, url ) values('"+req.body.name+"', '"+req.body.keywords+"', "+req.body.active+")", function(err, results) {
              if (!err)
 			{
 				//res.render('categories', { categories: results });

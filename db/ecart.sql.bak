@@ -20,7 +20,7 @@
 	update categories set url="baby-kids" where id =4;
 	update categories set url="home-furniture" where id =5;
 	update categories set url="books-media" where id =6;
-	update categories set url="auto-sports" where id =7;
+	update categories set url="Auto & Sports" where id =7;
 
 ----------- table products ----------------
 	create table products( id INT NOT NULL PRIMARY KEY,category_id INT NOT NULL, name varchar(255) NOT NULL, SKU varchar(255) NOT NULL, price DECIMAL(10, 2) NOT NULL, quantity INT NOT NULL, enabled boolean NOT NULL, decription text, short_description text );

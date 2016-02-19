@@ -3,29 +3,29 @@
  <head>
   <meta charset="UTF-8">
  
-  <title> Add New Category </title>
+  <title>Edit Category </title>
   		
  </head>
  <body>
  	<div class="container">
  		<div class="jumbotron text-center">
- 			 <h1> Add New Category </h1>
+ 			 <h1> Edit Category  </h1>
  		</div>
  	</div>
 	
 	<div class="container">
 		<div class="alert alert-success" ng-show="success">
-		  <strong>Success!</strong> New Category Added Successfully!
+		  <strong>Success!</strong> Changes done successfully!
 		</div>
-		<form ng-submit="addNewCategory()" method="POST" role="form">
+		<form ng-submit="updateCategory()" method="POST" role="form">
 			<div class="form-group">
 				<label for="name"> Category Name : </label>
 				<input type="text" name="name" id="name" class="form-control" ng-model="category.name">
 			</div>
-			<!-- <div class="form-group">
-				<label for="categoryurl"> Category URL : </label>
-				<input type="text" name="categoryurl" id="categoryurl" class="form-control" ng-model="category.url">
-			</div> -->
+			<div class="form-group">
+				<label for="name"> Category URL : </label>
+				<input type="text" name="name" id="url" class="form-control" ng-model="category.url">
+			</div>
 			<div class="form-group">
 				<label for="keywords"> keywords : </label>
 				<textarea rows="5" columns="125" name="keywords" id="keywords" class="form-control" ng-model="category.keywords"></textarea>

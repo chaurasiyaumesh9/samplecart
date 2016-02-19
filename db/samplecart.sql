@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2016 at 02:08 PM
+-- Generation Time: Feb 19, 2016 at 02:16 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -31,27 +31,22 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `name` varchar(255) NOT NULL,
   `keywords` text,
   `active` tinyint(1) NOT NULL,
+  `url` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `keywords`, `active`) VALUES
-(1, 'Electronics', 'Electronics', 1),
-(2, 'Men', 'Men', 1),
-(3, 'Women', 'Women', 1),
-(4, 'Baby & Kids', 'Baby & Kids', 1),
-(5, 'Home & Furniture', 'Home & Furniture', 1),
-(6, 'Books & Media', 'Books & Media', 1),
-(7, 'Auto & Sports', 'Auto & Sports', 0),
-(8, 'test', 'test keywords ', 0),
-(9, 'test 2', 'test 2', 0),
-(10, 'test 3', 'test 3', 0),
-(11, 'test 4', '$scope.category', 0),
-(12, 'test 5', 'success', 0),
-(13, 'test 6', 'success 5', 1);
+INSERT INTO `categories` (`id`, `name`, `keywords`, `active`, `url`) VALUES
+(1, 'Electronics', 'Electronics', 1, 'electronics'),
+(2, 'Men', 'Men', 1, 'men'),
+(3, 'Women', 'Women', 1, 'women'),
+(4, 'Baby & Kids', 'Baby & Kids', 1, 'baby-kids'),
+(5, 'Home & Furniture', 'Home & Furniture', 1, 'home-furniture'),
+(6, 'Books & Media', 'Books & Media', 1, 'books-media'),
+(7, 'Auto & Sports', 'Auto & Sports', 0, 'auto-sports');
 
 -- --------------------------------------------------------
 

@@ -9,7 +9,7 @@
  <body>
  	<div class="container">
  		<div class="jumbotron text-center">
- 			 <h1> Add new Category </h1>
+ 			 <h1> Add New Category </h1>
  		</div>
  	</div>
 	
@@ -22,6 +22,7 @@
 				<label for="name"> Category Name : </label>
 				<input type="text" name="name" id="name" class="form-control" ng-model="category.name">
 			</div>
+			
 			<div class="form-group">
 				<label for="keywords"> keywords : </label>
 				<textarea rows="5" columns="125" name="keywords" id="keywords" class="form-control" ng-model="category.keywords"></textarea>
@@ -35,7 +36,7 @@
 			</div>
 			
 			<button type="submit" class="btn btn-default"> Submit </button>
-			<a href="#categories">Go Back</a>
+			<a href="#categories" class="pull-right">Go Back</a>
 		</form>
 	</div>
 	
