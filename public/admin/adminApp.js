@@ -14,6 +14,10 @@ adminApp.config(function($routeProvider, $locationProvider) {
 			templateUrl : 'pages/products.html',
 			controller: "productsCtrl"
 		})
+		.when('/products/add-new', {
+			templateUrl : 'pages/add-new-product.html',
+			controller: "productsCtrl"
+		})
 		.when('/categories', {
 			templateUrl : 'pages/categories.html',
 			controller: "categoriesCtrl"
@@ -33,8 +37,99 @@ adminApp.config(function($routeProvider, $locationProvider) {
 adminApp.controller('adminCtrl', function($scope){
 	$scope.message = "Welcome to dashboard!"; //just to check if controller is working fine..print the message!
 });
-adminApp.controller('productsCtrl', function($scope){
+adminApp.controller('productsCtrl', function($scope, productService, categoryService){
 	$scope.message = "Manage Your Products";
+	$scope.addSuccess = false;
+	$scope.loadDefaults = function(){
+		getAllCategories();
+		$scope.product = {enabled:false};
+	}
+
+	$scope.addNewProduct = function( product ){		
+		product.category_ids = JSON.stringify( getSelectedCategories() ); //gettting only chosen categories by splicing the un-selected.
+		//console.log( product );
+		productService.addNewProduct( product ).then( function( response ){
+			$scope.addSuccess = true;
+			$scope.loadDefaults();
+		}, function( errorMessage ){
+			console.warn( errorMessage );
+		});
+	}
+	
+
+	function getSelectedCategories(){
+		var arr = [];
+		for ( var i=0; i< $scope.categories.length ;i++ )
+		{
+			if ( $scope.categories[i].selected )
+			{
+				arr.push( $scope.categories[i].id );
+			}
+		}
+		return arr;
+	}
+
+	getProductList();
+
+	function getProductList(){
+		productService.getProductList().then( function( response ){
+			$scope.productList = response;
+		}, function( errorMessage ){
+			console.warn( errorMessage );
+		});
+	}
+
+	function getAllCategories(){
+		categoryService.getAllCategories().then( function( response ){
+			$scope.categories = response;
+		}, function( errorMessage ){
+			console.warn( errorMessage );
+		});
+	}
+});
+
+adminApp.service('productService', function($http, $q){
+	
+	return({
+		getProductList: getProductList,
+		addNewProduct: addNewProduct
+	});
+
+	function getProductList(){
+		var request = $http({
+            method: "get",
+            url: "/admin/products",
+            params: {
+                action: "get"
+            }
+        });
+        return( request.then( handleSuccess, handleError ) );
+	}
+
+	function addNewProduct( product ){
+		var request = $http({
+            method: "post",
+            url: "/admin/products",
+            params: {
+                action: "add"
+            },
+            data: {
+                product: product
+            }
+        });
+        return( request.then( handleSuccess, handleError ) );
+	}
+
+	function handleError( response ) {
+        if ( ! angular.isObject( response.data ) || ! response.data.message ) {
+            return( $q.reject( "An unknown error occurred." ) );
+        }
+        // Otherwise, use expected error message.
+        return( $q.reject( response.data.message ) );
+    }
+    function handleSuccess( response ) {
+	    return( response.data );
+	}
 });
 
 adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, categoryService ){
@@ -137,13 +232,12 @@ adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, cate
 
 });
 
-
 adminApp.service("categoryService", function($http, $q){
 	return({
-        addNewCategory: addNewCategory,
+        addNewCategory: addNewCategory, //done
         getAllCategories: getAllCategories, //done
 		getCategoryById: getCategoryById, //done
-        deleteCategory: deleteCategory,
+        deleteCategory: deleteCategory, //done
 		updateCategory: updateCategory //done
     });
 

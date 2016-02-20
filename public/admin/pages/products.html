@@ -1,19 +1,33 @@
-<!doctype html>
-<html lang="en">
- <head>
-  <meta charset="UTF-8">
- 
-  <title> Products </title>
- 
- </head>
- <body>
- 	<div class="container">
- 		<div class="jumbotron text-center">
- 			 <h1> {{ message }} </h1>
- 		</div>
- 	</div>
+<div class="container">
+	<div class="jumbotron text-center">
+		 <h1> {{ message }} </h1>
+	</div>
+</div>
 
- 		
+<div class="container">
+	<table class="table table-stripped">
+		<thead>
+			<tr>
+				<th> Product Name </th>
+				<!-- <th> SKU </th> -->
+				<th> Price </th>
+				<th> Quantity </th>
+				<th> Enabled </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="product in productList">
+				<td> {{ product.name }} </td>
+				<!-- <td> {{ product.SKU }} </td> -->
+				<td> {{ product.price }} </td>
+				<td> {{ product.quantity }} </td>
+				<td> {{ product.enabled }} </td>
+			 </tr>
+		 </tbody>
+	</table>
+</div>
 
- </body>
-</html>
+<div class="container">
+	<a class="btn btn-primary" href="#/products/add-new"> Add New Product</a>
+	
+</div>

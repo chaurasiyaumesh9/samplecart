@@ -35,6 +35,7 @@ var categories = {
 			return;
 		}
 		var category = req.body.category;
+		//console.log( category );
 		pool.getConnection( function(err, conn){
 			conn.query("Insert into categories(name, keywords, active, url ) values('"+category.name+"', '"+category.keywords+"', "+category.active+",'"+ category.url +"')", function(err, results) {
 				 if (!err)
@@ -78,7 +79,42 @@ var categories = {
 			 });
 		});
 	}
-}
+};
+
+var products = {
+	getProductList: function (req, res){
+		pool.getConnection( function(err, conn){
+			conn.query("select * from products", function(err, results) {
+				 if (!err)
+				{
+					res.json( results );
+				}else{
+					console.log('Error while performing the query..check function getProductList() for more details..');
+				}
+				conn.release();
+			 });
+		});
+	},
+	addNewProduct: function(req, res){
+		if ( !req.body.product )
+		{
+			return;
+		}
+		var product = req.body.product;
+		console.log( product );
+		pool.getConnection( function(err, conn){
+			conn.query("Insert into products( category_ids, name, SKU, price, quantity, enabled, description, short_description) values('"+product.category_ids+"', '"+product.name+"',' "+product.SKU+"',"+ product.price +","+ product.quantity +","+ product.enabled +",'"+ product.description +"','"+ product.short_description+"')", function(err, results) {
+				 if (!err)
+				{
+					res.json({});
+				}else{
+					console.log('Error while performing the query..check function addNewProduct() for more details..');
+				}
+				conn.release();
+			 });
+		});
+	}
+};
 
 router.get('/categories', function(req, res){
 	categories.getCategories( req, res );
@@ -100,5 +136,12 @@ router.delete('/categories/:id', function(req, res){
 	categories.deleteCategory( req, res );
 });
 
+
+router.get('/products', function(req, res){
+	products.getProductList(req, res);
+});
+router.post('/products', function(req, res){
+	products.addNewProduct( req, res );
+});
 
 module.exports = router;
