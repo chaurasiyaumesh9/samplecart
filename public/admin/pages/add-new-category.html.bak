@@ -4,7 +4,7 @@
 	</div>
 </div>
 
-<div class="container" ng-init="loadDefaults()">
+<div class="container">
 	<div class="alert alert-success" ng-show="success">
 	  <strong>Success!</strong> New Category Added Successfully!
 	</div>

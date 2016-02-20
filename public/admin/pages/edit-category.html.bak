@@ -32,7 +32,7 @@
 			</div>
 			<div class="form-group">
 				<label for="active"> Active </label>
-				<input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="category.active"  />
+				<input type="checkbox" ng-model="category.active" ng-true-value="1" ng-false-value="0" />
 				<!-- <select name="active" id="active" class="form-control" ng-model="category.active">
 					<option value="1" ng-selected="category.active">Yes</option>
 					<option value="0" ng-selected="category.active">No</option>

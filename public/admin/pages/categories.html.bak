@@ -32,5 +32,5 @@
 	<a class="btn btn-primary" href="#/categories/add-new">
 		Add New Category
 	</a>
-	<button class="btn btn-danger" ng-disabled="!showDelete" ng-click="deleteCategories()"> <i class="fa fa-trash"></i> </button>
+	<button class="btn btn-danger" ng-disabled="!showDelete" ng-click="deleteCategories()"> <i class="fa fa-trash fa-6"></i> </button>
  </div>

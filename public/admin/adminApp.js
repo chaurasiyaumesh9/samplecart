@@ -1,4 +1,4 @@
-//caution - complete service injection in controller
+// configure dropdown for string/boolean & 0-1
 
 
 var adminApp = angular.module('sampleCartAdmin', ['ngRoute']);
@@ -37,8 +37,9 @@ adminApp.controller('productsCtrl', function($scope){
 	$scope.message = "Manage Your Products";
 });
 
-adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, categories){
+adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, categoryService ){
 	$scope.message = "Manage Categories";
+	
 	$scope.showDelete = false;
 	$scope.deletionSuccess = false;
 	$scope.updationSuccess = false;
@@ -48,39 +49,39 @@ adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, cate
 	if ( $routeParams.id )
 	{
 		categoryId = $routeParams.id; // check if in edit mode
-		categories.getCategoryById( categoryId ).then( function( response ){
+		categoryService.getCategoryById( categoryId ).then( function( response ){
 			$scope.category = response;
 		} , function(errorMessage ){ 
 			console.warn( errorMessage );
 		});
 	}
+	$scope.loadDefaults = function(){
+		$scope.category = {active:false};
+	}
 	getAllCategories();
 
-	function clearScope(){
-		$scope.category = {};
-	}
-
 	function getAllCategories(){
-		categories.getAllCategories().then( function( response ){
+		categoryService.getAllCategories().then( function( response ){
 			$scope.categories = response;
 		}, function( errorMessage ){
 			console.warn( errorMessage );
 		});
-		
 	}
 
-	$scope.updateCategory = function( id ){
-		
-		$http.put('/admin/categories/' + id, $scope.category  ).success( function( response ){
+	$scope.updateCategory = function( category ){
+		categoryService.updateCategory( category ).then( function( response ){
 			$scope.updationSuccess = true;
+		}, function( errorMessage ){
+			console.warn( errorMessage );
 		});
 	}
 
-	$scope.addNewCategory = function(){
-		//console.log( $scope.category );
-		$http.post('/admin/categories',$scope.category).success( function(response){
+	$scope.addNewCategory = function( category ){
+		categoryService.addNewCategory( category ).then( function( response ){
 			$scope.success = true;
 			$scope.category = {};
+		}, function( errorMessage ){
+			console.warn( errorMessage );
 		});
 	}
 
@@ -89,9 +90,11 @@ adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, cate
 		
 		for ( var i=0; i<checked.length ;i++ )
 		{ 
-			$http.delete('/admin/categories/' + checked[i].id).success( function(response){
+			categoryService.deleteCategory( checked[i].id ).then( function( response ){
 				getAllCategories();
 				$scope.deleteCount++;
+			}, function( errorMessage ){
+				console.warn( errorMessage );
 			});
 		}
 		$scope.deletionSuccess = true;
@@ -134,16 +137,17 @@ adminApp.controller('categoriesCtrl', function($scope, $http, $routeParams, cate
 
 });
 
-adminApp.service("categories", function($http, $q){
+
+adminApp.service("categoryService", function($http, $q){
 	return({
-        addCategory: addCategory,
+        addNewCategory: addNewCategory,
         getAllCategories: getAllCategories, //done
 		getCategoryById: getCategoryById, //done
         deleteCategory: deleteCategory,
-		updateCategory: updateCategory
+		updateCategory: updateCategory //done
     });
 
-	function addCategory( category ){
+	function addNewCategory( category ){
 		var request = $http({
             method: "post",
             url: "/admin/categories",
@@ -168,7 +172,6 @@ adminApp.service("categories", function($http, $q){
         return( request.then( handleSuccess, handleError ) );
     }
 	function getCategoryById( id ) {
-		console.log('getCategoryById',id);
         var request = $http({
             method: "get",
             url: "/admin/categories/" + id,
@@ -194,25 +197,21 @@ adminApp.service("categories", function($http, $q){
         });
         return( request.then( handleSuccess, handleError ) );
     }
-	 function updateCategory( id, category ) {
+	 function updateCategory( category ) {
         var request = $http({
             method: "put",
-            url: "/admin/categories/" + id,
+            url: "/admin/categories/" + category.id,
             params: {
                 action: "update"
             },
             data: {
-				id: id,
                 category: category
             }
         });
         return( request.then( handleSuccess, handleError ) );
     }
     function handleError( response ) {
-        if (
-            ! angular.isObject( response.data ) ||
-            ! response.data.message
-            ) {
+        if ( ! angular.isObject( response.data ) || ! response.data.message ) {
             return( $q.reject( "An unknown error occurred." ) );
         }
         // Otherwise, use expected error message.
