@@ -1,4 +1,4 @@
-//caution - complete service injection in controller
+//caution - complete service in controller
 
 
 var adminApp = angular.module('sampleCartAdmin', ['ngRoute']);
