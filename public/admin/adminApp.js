@@ -41,7 +41,7 @@ adminApp.controller('adminCtrl', function($scope){
 });
 adminApp.controller('productsCtrl', function($scope, $routeParams, productService, categoryService){
 	$scope.message = "Manage Your Products";
-	$scope.addSuccess = false;
+	$scope.addSuccess = false, $scope.deleteSuccess = false, $scope.updateSuccess = false;
 
 	if ( $routeParams.id )
 	{
@@ -63,7 +63,7 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 		product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
 		productService.addNewProduct( product ).then( function( response ){
 			$scope.addSuccess = true;
-			$scope.loadDefaults(); //re-initalize my page by making fields to null
+			$scope.loadDefaults(); //re-initalize my page by loading defaults
 		}, function( errorMessage ){
 			console.warn( errorMessage );
 		});
@@ -71,7 +71,6 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 
 	$scope.updateProduct = function( product ){
 		product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
-		//console.log(product);
 		productService.updateProduct( product ).then( function( response ){
 			$scope.updateSuccess = true;
 		}, function( errorMessage ){
@@ -80,10 +79,14 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 	}
 
 	$scope.deleteProduct = function( product ){
-		
+		productService.deleteProduct( product.id ).then( function( response ){
+			$scope.deleteSuccess = true;
+		}, function( errorMessage ){
+			console.warn( errorMessage );
+		});
 	}
 
-	function getCheckedCategories(){ //deserializing id's
+	function getCheckedCategories(){ 
 		var arr = [];
 		for ( var i=0; i< $scope.categories.length ;i++ )
 		{
@@ -133,8 +136,22 @@ adminApp.service('productService', function($http, $q){
 		getProductList: getProductList,
 		getProductById: getProductById,
 		addNewProduct: addNewProduct,
-		updateProduct: updateProduct
+		updateProduct: updateProduct,
+		deleteProduct: deleteProduct
 	});
+	function deleteProduct( id ) {
+        var request = $http({
+            method: "delete",
+            url: "/admin/products/" + id,
+            params: {
+                action: "delete"
+            },
+            data: {
+                id: id
+            }
+        });
+        return( request.then( handleSuccess, handleError ) );
+    }
 	function updateProduct( product ) {
         var request = $http({
             method: "put",

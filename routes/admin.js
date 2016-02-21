@@ -148,6 +148,19 @@ var products = {
 				conn.release();
 			 });
 		});
+	},
+	deleteProduct: function(req, res){
+		pool.getConnection( function(err, conn){
+			conn.query("delete from products where id=" + req.params.id, function(err, results) {
+				 if (!err)
+				{
+					res.json({});
+				}else{
+					console.log('Error while performing the query..check function deleteProduct() for more details..');
+				}
+				conn.release();
+			 });
+		});
 	}
 };
 
@@ -184,5 +197,10 @@ router.put('/products/:id', function(req, res){
 router.post('/products', function(req, res){
 	products.addNewProduct( req, res );
 });
+router.delete('/products/:id', function(req, res){
+	products.deleteProduct( req, res );
+});
+
+
 
 module.exports = router;
