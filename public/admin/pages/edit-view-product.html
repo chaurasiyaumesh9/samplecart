@@ -1,26 +1,25 @@
 <div class="container">
 	<div class="jumbotron text-center">
-		 <h1> Add New Product </h1>
+		 <h1> <i class="fa fa-tags"></i> Edit/View Product  </h1>
 	</div>
 </div>
 
 <div class="container" ng-init="loadDefaults()">
-	 <div class="alert alert-success" ng-show="addSuccess">
-	  <strong>Success!</strong> New Product Added Successfully!
+	 <div class="alert alert-success" ng-show="updateSuccess">
+	  <strong>Success!</strong> Product Updated Successfully!
 	</div> 
 	
-	<form ng-submit="addNewProduct( product )" method="POST" role="form">
+	<form ng-submit="updateProduct( product )" method="POST" role="form">
 		<div class="form-group">
 			<label for="name"> Product Name : </label>
 			<input type="text" name="name" id="name" class="form-control" ng-model="product.name">
 		</div>
 		<div class="form-group">
-			<label for="name"> Choose categories to be assigned for this product : </label>
-			
+			<label for="name"> Categories assigned to this product : </label>
 			<div class="categories">
 				<div class="category" ng-repeat="category in categories" style="margin-left:10px;">
 				   <label>
-					 <input type="checkbox" name="categories" ng-model="category.selected" > <span style="font-weight:normal;">{{ category.name }}</span>
+					 <input type="checkbox" name="categories"  ng-model="category.selected"> <span style="font-weight:normal;">{{ category.name }}</span>
 				   </label>
 				 </div>
 			</div>
@@ -35,7 +34,7 @@
 			<input type="number" name="price" id="price" class="form-control" ng-model="product.price">
 		</div>
 		<div class="form-group">
-			<label for="quantity"> Quantity (To be keeped in stock) : </label>
+			<label for="quantity"> Quantity ( Availabale In Stock ) : </label>
 			<input type="number" name="quantity" id="quantity" class="form-control" ng-model="product.quantity">
 		</div>
 		<div class="form-group">
@@ -56,3 +55,4 @@
 		<a href="#products" class="pull-right">Go Back</a>
 	</form>
 </div>
+

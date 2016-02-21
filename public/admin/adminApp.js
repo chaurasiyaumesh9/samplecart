@@ -1,6 +1,3 @@
-// configure dropdown for string/boolean & 0-1
-
-
 var adminApp = angular.module('sampleCartAdmin', ['ngRoute']);
 
 adminApp.config(function($routeProvider, $locationProvider) {
@@ -16,6 +13,10 @@ adminApp.config(function($routeProvider, $locationProvider) {
 		})
 		.when('/products/add-new', {
 			templateUrl : 'pages/add-new-product.html',
+			controller: "productsCtrl"
+		})
+		.when('/products/edit-view-product/:id', {
+			templateUrl : 'pages/edit-view-product.html',
 			controller: "productsCtrl"
 		})
 		.when('/categories', {
@@ -35,19 +36,30 @@ adminApp.config(function($routeProvider, $locationProvider) {
 });
 
 adminApp.controller('adminCtrl', function($scope){
-	$scope.message = "Welcome to dashboard!"; //just to check if controller is working fine..print the message!
+	$scope.message = "Welcome to Dashboard!"; //just to check if controller is working fine..print the message!
 });
-adminApp.controller('productsCtrl', function($scope, productService, categoryService){
+adminApp.controller('productsCtrl', function($scope, $routeParams, productService, categoryService){
 	$scope.message = "Manage Your Products";
 	$scope.addSuccess = false;
+
+	if ( $routeParams.id )
+	{
+		productID = $routeParams.id; // check if in edit/view mode
+		productService.getProductById( productID ).then( function( response ){
+			$scope.product = response;
+			$scope.product.category_ids = JSON.parse( $scope.product.category_ids ); //serializing the category ids;
+		} , function(errorMessage ){ 
+			console.warn( errorMessage );
+		});
+	}
+
 	$scope.loadDefaults = function(){
 		getAllCategories();
 		$scope.product = {enabled:false};
 	}
-
+	
 	$scope.addNewProduct = function( product ){		
-		product.category_ids = JSON.stringify( getSelectedCategories() ); //gettting only chosen categories by splicing the un-selected.
-		//console.log( product );
+		product.category_ids = JSON.stringify( deserializeCategoryIDs() ); //gettting only chosen categories by splicing the un-selected part.
 		productService.addNewProduct( product ).then( function( response ){
 			$scope.addSuccess = true;
 			$scope.loadDefaults();
@@ -55,9 +67,12 @@ adminApp.controller('productsCtrl', function($scope, productService, categorySer
 			console.warn( errorMessage );
 		});
 	}
-	
 
-	function getSelectedCategories(){
+	$scope.updateProduct = function( product ){
+		conole.log('updateProduct');
+	}
+
+	function deserializeCategoryIDs(){ //deserializing id's
 		var arr = [];
 		for ( var i=0; i< $scope.categories.length ;i++ )
 		{
@@ -67,6 +82,18 @@ adminApp.controller('productsCtrl', function($scope, productService, categorySer
 			}
 		}
 		return arr;
+	}
+
+	function setCheckedCategories( ){
+		for ( var i=0; i<$scope.categories.length; i++ )
+		{
+			if ( $scope.product.category_ids.indexOf( $scope.categories[i].id ) != -1 )
+			{
+				$scope.categories[i].selected = true;
+			}			else{
+				$scope.categories[i].selected = false;
+			}
+		}
 	}
 
 	getProductList();
@@ -82,6 +109,7 @@ adminApp.controller('productsCtrl', function($scope, productService, categorySer
 	function getAllCategories(){
 		categoryService.getAllCategories().then( function( response ){
 			$scope.categories = response;
+			setCheckedCategories();
 		}, function( errorMessage ){
 			console.warn( errorMessage );
 		});
@@ -92,6 +120,7 @@ adminApp.service('productService', function($http, $q){
 	
 	return({
 		getProductList: getProductList,
+		getProductById: getProductById,
 		addNewProduct: addNewProduct
 	});
 
@@ -99,6 +128,18 @@ adminApp.service('productService', function($http, $q){
 		var request = $http({
             method: "get",
             url: "/admin/products",
+            params: {
+                action: "get"
+            }
+        });
+        return( request.then( handleSuccess, handleError ) );
+	}
+
+	function getProductById( id ){
+		//console.log('getProductById', id);
+		var request = $http({
+            method: "get",
+            url: "/admin/products/" + id,
             params: {
                 action: "get"
             }

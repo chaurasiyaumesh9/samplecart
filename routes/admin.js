@@ -95,6 +95,19 @@ var products = {
 			 });
 		});
 	},
+	getProductById: function (req, res){
+		pool.getConnection( function(err, conn){
+			conn.query("select * from products where id="+req.params.id, function(err, results) {
+				 if (!err)
+				{
+					res.json( results[0] );
+				}else{
+					console.log('Error while performing the query..check function getProductById() for more details..');
+				}
+				conn.release();
+			 });
+		});
+	},
 	addNewProduct: function(req, res){
 		if ( !req.body.product )
 		{
@@ -139,6 +152,9 @@ router.delete('/categories/:id', function(req, res){
 
 router.get('/products', function(req, res){
 	products.getProductList(req, res);
+});
+router.get('/products/:id', function(req, res){
+	products.getProductById(req, res);
 });
 router.post('/products', function(req, res){
 	products.addNewProduct( req, res );
