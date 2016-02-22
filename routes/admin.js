@@ -126,6 +126,28 @@ var products = {
 				conn.release();
 			 });
 		});
+	},
+	updateProduct: function(req, res){
+		if ( !req.body.product )
+		{
+			return;
+		}
+		var product = req.body.product;
+		//console.log( 'product : ', product );
+		var Query = "update products set category_ids='"+product.category_ids+"', name='"+ product.name +"', SKU='"+ product.SKU +"', price="+ product.price +",quantity="+ product.quantity +",enabled="+ product.enabled +",description='"+ product.description +"',short_description='"+ product.short_description +"' where id=" +product.id;
+		
+		//console.log('Query :',Query);
+		pool.getConnection( function(err, conn){
+			conn.query(Query, function(err, results) {
+				 if (!err)
+				{
+					res.json( results );
+				}else{
+					console.log('Error while performing the query..check function updateProduct() for more details..');
+				}
+				conn.release();
+			 });
+		});
 	}
 };
 
@@ -155,6 +177,9 @@ router.get('/products', function(req, res){
 });
 router.get('/products/:id', function(req, res){
 	products.getProductById(req, res);
+});
+router.put('/products/:id', function(req, res){
+	products.updateProduct( req, res );
 });
 router.post('/products', function(req, res){
 	products.addNewProduct( req, res );

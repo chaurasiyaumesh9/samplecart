@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2016 at 09:11 AM
+-- Generation Time: Feb 22, 2016 at 12:04 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -85,7 +85,7 @@ INSERT INTO `products` (`id`, `category_ids`, `name`, `SKU`, `price`, `quantity`
 (20, '[5]', 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.'),
 (21, '[1,2,4,5]', 'test 4', ' test', '4567.00', 34, 1, 'test', 'test'),
 (22, '[1,3]', 'test & test', ' test', '30.00', 54, 1, 'ewew', 'wqwq'),
-(23, '[4,6]', 'test1', ' test1', '35.00', 23, 0, 'test1', 'test1');
+(23, '[6]', 'test11', ' test1', '35.00', 230, 0, 'test11', 'test11');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,9 +1,10 @@
+// deleteProduct to be continued...
+
 var adminApp = angular.module('sampleCartAdmin', ['ngRoute']);
 
 adminApp.config(function($routeProvider, $locationProvider) {
 	$routeProvider
 
-		// route for the home page
 		.when('/', {
 			templateUrl : 'pages/dashboard.html'
 		})
@@ -47,7 +48,7 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 		productID = $routeParams.id; // check if in edit/view mode
 		productService.getProductById( productID ).then( function( response ){
 			$scope.product = response;
-			$scope.product.category_ids = JSON.parse( $scope.product.category_ids ); //serializing the category ids;
+			$scope.product.category_ids = JSON.parse( $scope.product.category_ids ); //decoding the category ids from db string to JSON object.
 		} , function(errorMessage ){ 
 			console.warn( errorMessage );
 		});
@@ -59,20 +60,30 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 	}
 	
 	$scope.addNewProduct = function( product ){		
-		product.category_ids = JSON.stringify( deserializeCategoryIDs() ); //gettting only chosen categories by splicing the un-selected part.
+		product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
 		productService.addNewProduct( product ).then( function( response ){
 			$scope.addSuccess = true;
-			$scope.loadDefaults();
+			$scope.loadDefaults(); //re-initalize my page by making fields to null
 		}, function( errorMessage ){
 			console.warn( errorMessage );
 		});
 	}
 
 	$scope.updateProduct = function( product ){
-		conole.log('updateProduct');
+		product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
+		//console.log(product);
+		productService.updateProduct( product ).then( function( response ){
+			$scope.updateSuccess = true;
+		}, function( errorMessage ){
+			console.warn( errorMessage );
+		});
 	}
 
-	function deserializeCategoryIDs(){ //deserializing id's
+	$scope.deleteProduct = function( product ){
+		
+	}
+
+	function getCheckedCategories(){ //deserializing id's
 		var arr = [];
 		for ( var i=0; i< $scope.categories.length ;i++ )
 		{
@@ -121,8 +132,22 @@ adminApp.service('productService', function($http, $q){
 	return({
 		getProductList: getProductList,
 		getProductById: getProductById,
-		addNewProduct: addNewProduct
+		addNewProduct: addNewProduct,
+		updateProduct: updateProduct
 	});
+	function updateProduct( product ) {
+        var request = $http({
+            method: "put",
+            url: "/admin/products/" + product.id,
+            params: {
+                action: "update"
+            },
+            data: {
+                product: product
+            }
+        });
+        return( request.then( handleSuccess, handleError ) );
+    }
 
 	function getProductList(){
 		var request = $http({
