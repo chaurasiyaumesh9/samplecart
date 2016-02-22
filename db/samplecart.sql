@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2016 at 12:04 PM
+-- Generation Time: Feb 22, 2016 at 12:02 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `active` tinyint(1) NOT NULL,
   `url` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `categories`
@@ -46,7 +46,8 @@ INSERT INTO `categories` (`id`, `name`, `keywords`, `active`, `url`) VALUES
 (4, 'Baby & Kids', 'Baby & Kids', 1, 'baby-kids'),
 (5, 'Home & Furniture', 'Home & Furniture', 1, 'home-furniture'),
 (6, 'Books & Media', 'Books & Media', 0, 'books-media'),
-(7, 'Auto & Sports', 'Auto & Sports', 0, 'auto-sports');
+(7, 'Auto & Sports', 'Auto & Sports', 0, 'auto-sports'),
+(8, 'Offer Zone', 'Offer Zone', 1, 'offer-zone');
 
 -- --------------------------------------------------------
 
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `short_description` text,
   PRIMARY KEY (`id`),
   KEY `fk_categories_id` (`category_ids`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `products`
@@ -81,11 +82,8 @@ INSERT INTO `products` (`id`, `category_ids`, `name`, `SKU`, `price`, `quantity`
 (16, '[3]', 'Alia Hand-held Bag (Pink003)', 'OEJB98024TB54', '799.00', 35, 1, 'Quality bags at affordable price, its great for office, parties, markets and all occassions. This pu leather hand bag is a very durable utility item you can carry this hand bag with its twin grab handles to look classy with a fashionable apeal.', 'Quality bags at affordable price, its great for office, parties, markets and all occassions.'),
 (17, '[3]', 'Incraze Hand-held Bag(White)', 'EOYI63441LY65', '999.00', 35, 1, 'Presenting From The House Of Incraze, Stylish Handbags That Are Designed For Casual Purpose. This One Exhibits The Preferences Of The Modern Indian Women Due To Its Captivating Design.', 'Presenting From The House Of Incraze, Stylish Handbags That Are Designed For Casual Purpose. This One Exhibits The Preferences Of The Modern Indian Women Due To Its Captivating Design.'),
 (18, '[3]', 'Rosemary Hand-held Bag(Pink With Blue)', 'SSEE90455WQ18', '1249.00', 28, 1, 'This handbag is made of beautiful non leather tote in traditional methods in order to maintain it soft feel. This handbag is a must-have for women,who prefer stylish handbag, featuring enough room to carry your essentials easily,this non-leather handbag i', 'This handbag is made of beautiful non leather tote in traditional methods in order to maintain it soft feel.'),
-(19, '[5]', 'Durian DOM/58601 Solid Wood King Bed(Finish Color - High Quality Glossy Polish)', 'LBXR20850AR66', '48000.00', 6, 1, 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom. :: Neatly presented with contemporary styling, the Wooden Bed features a sumptuous high slatted headboard with a complimenting low foot end that is perfect for creating a sense of space within your room.', 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom.'),
-(20, '[5]', 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.'),
-(21, '[1,2,4,5]', 'test 4', ' test', '4567.00', 34, 1, 'test', 'test'),
-(22, '[1,3]', 'test & test', ' test', '30.00', 54, 1, 'ewew', 'wqwq'),
-(23, '[6]', 'test11', ' test1', '35.00', 230, 0, 'test11', 'test11');
+(19, '[5,8]', 'Durian DOM/58601 Solid Wood King Bed(Finish Color - High Quality Glossy Polish)', 'LBXR20850AR66', '48000.00', 6, 1, 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom. :: Neatly presented with contemporary styling, the Wooden Bed features a sumptuous high slatted headboard with a complimenting low foot end that is perfect for creating a sense of space within your room.', 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom.'),
+(20, '[5]', 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

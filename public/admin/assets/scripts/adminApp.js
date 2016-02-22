@@ -1,6 +1,6 @@
 // deleteProduct to be continued...
 
-var adminApp = angular.module('sampleCartAdmin', ['ngRoute']);
+var adminApp = angular.module('sampleCartAdmin', ['ngRoute','angularUtils.directives.dirPagination']);
 
 adminApp.config(function($routeProvider, $locationProvider) {
 	$routeProvider
@@ -42,6 +42,13 @@ adminApp.controller('adminCtrl', function($scope){
 adminApp.controller('productsCtrl', function($scope, $routeParams, productService, categoryService){
 	$scope.message = "Manage Your Products";
 	$scope.addSuccess = false, $scope.deleteSuccess = false, $scope.updateSuccess = false;
+
+	$scope.currentPage = 1;
+	$scope.pageSize = 10;
+
+	 $scope.pageChangeHandler = function(num) {
+      console.log('page changed to ' + num);
+	};
 
 	if ( $routeParams.id )
 	{

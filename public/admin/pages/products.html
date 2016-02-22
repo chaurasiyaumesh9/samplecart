@@ -5,6 +5,22 @@
 </div>
 
 <div class="container">
+	<div class="row">
+		<div class="col-xs-4">
+			<!-- <h3> Page: {{ currentPage }}</h3> -->
+		</div>
+		<div class="col-xs-4">
+			<!-- <label for="search">Search:</label>
+			<input ng-model="q" id="search" class="form-control" placeholder="Filter text"> -->
+		</div>
+		<div class="col-xs-4">
+			<label for="search"> items per page: </label>
+			<input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+		</div>
+	</div>
+</div>
+
+<div class="container">
 	<table class="table table-stripped">
 		<thead>
 			<tr>
@@ -17,7 +33,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="product in productList">
+			<tr dir-paginate="product in productList | filter:q | itemsPerPage: pageSize" current-page="currentPage">
+			<!-- <tr ng-repeat="product in productList"> -->
 				<td> {{ product.name }} </td>
 				<td> {{ product.SKU }} </td> 
 				<td> {{ product.price }} </td>
@@ -28,7 +45,11 @@
 		 </tbody>
 	</table>
 </div>
-
+<div class="container">
+	<div class="text-center">
+		<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="/admin/pages/dirPagination.tpl.html"></dir-pagination-controls>
+	  </div>
+</div>
 <div class="container">
 	<a class="btn btn-primary" href="#/products/add-new"> Add New Product</a>
 	
