@@ -1,0 +1,61 @@
+CREATE TABLE categories(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(255),
+	keywords TEXT,
+	active BOOLEAN,
+	url VARCHAR(255)
+)	
+
+DELIMITER //
+CREATE PROCEDURE addCategory
+( name VARCHAR(255), keywords TEXT, active BOOLEAN, url VARCHAR(255))
+BEGIN
+	INSERT INTO categories( name, keywords, active, url ) values( name, keywords, active, url );
+END //
+DELIMITER ;
+
+CALL addCategory('Electronics', 'Electronics', 1, 'electronics');
+CALL addCategory('Men', 'Men', 1, 'men');
+CALL addCategory('Baby & Kids', 'Baby & Kids', 1, 'baby-kids');
+CALL addCategory('Home & Furniture', 'Home & Furniture', 1, 'home-furniture');
+CALL addCategory('Books & Media', 'Books & Media', 1, 'books-media');
+CALL addCategory('Auto & Sports', 'Auto & Sports', 1, 'auto-sports');
+
+---------------------------------------------------------------------------------------------------
+
+CREATE TABLE products( 
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(255) NOT NULL, 
+	SKU VARCHAR(255) NOT NULL, 
+	price DECIMAL(10, 2) NOT NULL, 
+	quantity INT NOT NULL, 
+	in_stock BOOLEAN NOT NULL, 
+	description TEXT, 
+	short_description TEXT,
+	date_added DATE,
+	valid_from DATE,
+	valid_till DATE,
+	is_deleted BOOLEAN DEFAULT 0
+);
+
+DELIMITER //
+CREATE PROCEDURE addProduct
+( 
+	name VARCHAR(255), 
+	SKU VARCHAR(255), 
+	price DECIMAL(10, 2), 
+	quantity INT, 
+	in_stock BOOLEAN, 
+	description TEXT, 
+	short_description TEXT,
+	date_added DATE,
+	valid_from DATE,
+	valid_till DATE
+)
+BEGIN
+	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till );
+END //
+DELIMITER ;
+
+CALL addProduct( "Micromax Canvas Pulse 4G", "GFSW94217WF39", 9999.00,100, true ,"It's time you bid goodbye to your clunky old phone and experience a brand new way of staying connected. The Micromax Canvas Pulse 4G offers you the reliability of a laptop and the ease of using a phone - all in one smart device. With a 3 GB DDR3 RAM, this device packs a punch so you can multitask between apps, browse the Web and play your favorite games without lag.","It's time you bid goodbye to your clunky old phone and experience a brand new way of staying connected.","2016-01-01", "2016-01-01", "2022-12-31");
+

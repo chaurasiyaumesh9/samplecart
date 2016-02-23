@@ -22,6 +22,23 @@
 	update categories set url="books-media" where id =6;
 	update categories set url="auto-sports" where id =7;
 
+	DELIMITER //
+	CREATE PROCEDURE getProductById
+	(IN productId INT)
+	BEGIN
+	  SELECT * FROM products
+	  WHERE id = productId;
+	END //
+	DELIMITER ;
+
+	DELIMITER //
+	CREATE PROCEDURE addNewProduct
+	( category_ids, name, SKU, price, quantity, enabled, description, short_description )
+	BEGIN
+	  	INSERT INTO products( category_ids, name, SKU, price, quantity, enabled, description, short_description ) values("[1]", "Micromax Canvas Pulse 4G", "GFSW94217WF39", 9999.00,100,1,"It's time you bid goodbye to your clunky old phone and experience a brand new way of staying connected. The Micromax Canvas Pulse 4G offers you the reliability of a laptop and the ease of using a phone - all in one smart device. With a 3 GB DDR3 RAM, this device packs a punch so you can multitask between apps, browse the Web and play your favorite games without lag.","It's time you bid goodbye to your clunky old phone and experience a brand new way of staying connected.");
+	END //
+	DELIMITER ;
+
 ----------- table products ----------------
 	create table products( id INT NOT NULL PRIMARY KEY,category_id INT NOT NULL, name varchar(255) NOT NULL, SKU varchar(255) NOT NULL, price DECIMAL(10, 2) NOT NULL, quantity INT NOT NULL, enabled boolean NOT NULL, description text, short_description text );
 
