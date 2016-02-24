@@ -218,5 +218,3 @@ BEGIN
 	select * from product_images where pid=productId;
 END //
 DELIMITER ;
-
----------------------------------------------------------------------------------------------------
