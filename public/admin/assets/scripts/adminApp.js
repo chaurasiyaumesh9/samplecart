@@ -63,11 +63,14 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 
 	$scope.loadDefaults = function(){
 		getAllCategories();
-		$scope.product = {enabled:false};
+		//$scope.product = {enabled:false, category_ids:[]};
+		$scope.product = {};
 	}
 	
-	$scope.addNewProduct = function( product ){		
-		product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
+	$scope.addNewProduct = function( product ){	
+		//product.date_added = lib.getCurrentDate();
+		//console.log( 'product : ',product);
+		//product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
 		productService.addNewProduct( product ).then( function( response ){
 			$scope.addSuccess = true;
 			$scope.loadDefaults(); //re-initalize my page by loading defaults
@@ -77,7 +80,7 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 	}
 
 	$scope.updateProduct = function( product ){
-		product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
+		//product.category_ids = JSON.stringify( getCheckedCategories() ); // passing selected categories for the product to database in string format via AJAX
 		productService.updateProduct( product ).then( function( response ){
 			$scope.updateSuccess = true;
 		}, function( errorMessage ){
@@ -130,7 +133,7 @@ adminApp.controller('productsCtrl', function($scope, $routeParams, productServic
 	function getAllCategories(){
 		categoryService.getAllCategories().then( function( response ){
 			$scope.categories = response;
-			setCheckedCategories();
+			//setCheckedCategories();
 		}, function( errorMessage ){
 			console.warn( errorMessage );
 		});
@@ -407,3 +410,25 @@ adminApp.service("categoryService", function($http, $q){
 
 
 });
+
+
+var lib = {
+	getCurrentDate: function(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		if(dd<10) {
+			dd='0'+dd
+		} 
+
+		if(mm<10) {
+			mm='0'+mm
+		} 
+
+		//today = mm+'-'+dd+'-'+yyyy;
+		today = yyyy +'-'+ mm +'-'+ dd ;
+		return today;
+	}
+}

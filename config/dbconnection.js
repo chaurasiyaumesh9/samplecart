@@ -3,7 +3,7 @@ var pool = sql.createPool({
 	host: 'localhost',
 	user: 'root',
 	password: '',
-	database: 'samplecart'
+	database: 'sample2'
 });
 
 

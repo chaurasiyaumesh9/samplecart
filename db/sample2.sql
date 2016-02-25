@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2016 at 08:12 PM
+-- Generation Time: Feb 25, 2016 at 08:57 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -70,6 +70,16 @@ BEGIN
 	INSERT INTO product_images_role( role_id, role_value ) values( role_id, role_value );
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteCategory`(IN `cid` INT)
+BEGIN
+	DELETE from categories where id=cid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProduct`( pid INT )
+BEGIN
+	UPDATE products SET is_deleted=1 WHERE id=pid;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCategories`()
 BEGIN
 	select * from categories;
@@ -100,6 +110,17 @@ BEGIN
 	select * from product_images where pid=productId;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCategory`( cid INT, cname VARCHAR(255), ckeywords TEXT, cactive BOOLEAN, curl VARCHAR(255) )
+BEGIN
+	UPDATE categories SET name = cname, keywords = ckeywords, active = cactive, url = curl where id = cid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateProduct`( pid INT, pname VARCHAR(255), pSKU VARCHAR(255), pprice DECIMAL(10,2), pquantity INT, pin_stock BOOLEAN, pdescription TEXT, pshort_description TEXT, pvalid_from DATE, pvalid_till DATE  )
+BEGIN
+	UPDATE products SET name = pname, SKU = pSKU, price = pprice, quantity = pquantity, in_stock = pin_stock, description = pdescription, short_description = pshort_description,
+	valid_from = pvalid_from, valid_till = pvalid_till where id = pid;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -115,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `active` tinyint(1) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `categories`
@@ -150,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `valid_till` date DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `products`
@@ -166,7 +187,8 @@ INSERT INTO `products` (`id`, `name`, `SKU`, `price`, `quantity`, `in_stock`, `d
 (7, 'Incraze Hand-held Bag(White)', 'EOYI63441LY65', '999.00', 35, 1, 'Presenting From The House Of Incraze, Stylish Handbags That Are Designed For Casual Purpose. This One Exhibits The Preferences Of The Modern Indian Women Due To Its Captivating Design.', 'Presenting From The House Of Incraze, Stylish Handbags That Are Designed For Casual Purpose. This One Exhibits The Preferences Of The Modern Indian Women Due To Its Captivating Design.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
 (8, 'Rosemary Hand-held Bag(Pink With Blue)', 'SSEE90455WQ18', '1249.00', 28, 1, 'This handbag is made of beautiful non leather tote in traditional methods in order to maintain it soft feel. This handbag is a must-have for women,who prefer stylish handbag, featuring enough room to carry your essentials easily,this non-leather handbag i', 'This handbag is made of beautiful non leather tote in traditional methods in order to maintain it soft feel.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
 (9, 'Durian DOM/58601 Solid Wood King Bed(Finish Color - High Quality Glossy Polish)', 'LBXR20850AR66', '48000.00', 6, 1, 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom. :: Neatly presented with contemporary styling, the Wooden Bed features a sumptuous high slatted headboard with a complimenting low foot end that is perfect for creating a sense of space within your room.', 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
-(10, 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', '2016-01-01', '2016-01-01', '2022-12-31', 0);
+(10, 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
+(13, 'TEST', 'test1', '6789.00', 34, 1, 'werwer', 'werwer', '2016-02-25', '2016-02-24', '2018-02-24', 0);
 
 -- --------------------------------------------------------
 

@@ -37,6 +37,20 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE deleteCategories( cid INT )
+BEGIN
+	DELETE from categories where id=cid;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE updateCategory( cid INT, cname VARCHAR(255), ckeywords TEXT, cactive BOOLEAN, curl VARCHAR(255) )
+BEGIN
+	UPDATE categories SET name = cname, keywords = ckeywords, active = cactive, url = curl where id = cid;
+END //
+DELIMITER ;
+
 ---------------------------------------------------------------------------------------------------
 
 CREATE TABLE products( 
@@ -109,6 +123,21 @@ DELIMITER //
 CREATE PROCEDURE getProductById( pid INT )
 BEGIN
 	select * from products where id=pid;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE deleteProduct( pid INT )
+BEGIN
+	UPDATE products SET is_deleted=1 WHERE id=pid;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE updateProduct( pid INT, pname VARCHAR(255), pSKU VARCHAR(255), pprice DECIMAL(10,2), pquantity INT, pin_stock BOOLEAN, pdescription TEXT, pshort_description TEXT, pvalid_from DATE, pvalid_till DATE  )
+BEGIN
+	UPDATE products SET name = pname, SKU = pSKU, price = pprice, quantity = pquantity, in_stock = pin_stock, description = pdescription, short_description = pshort_description,
+	valid_from = pvalid_from, valid_till = pvalid_till where id = cid;
 END //
 DELIMITER ;
 
@@ -218,3 +247,5 @@ BEGIN
 	select * from product_images where pid=productId;
 END //
 DELIMITER ;
+
+---------------------------------------------------------------------------------------------------

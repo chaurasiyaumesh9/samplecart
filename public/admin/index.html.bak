@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="sampleCartAdmin">
+<head>
+	<meta charset="UTF-8">
+	<title> Admin/Backend </title>
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">	
+	<link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">	
+</head>
+<body ng-controller="adminCtrl">
+	<!-- HEADER AND NAVBAR -->
+	<header>
+		<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/"> <i class="fa fa-shield"></i> MEAN is awesome!</a>
+			</div>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#/"><i class="fa fa-home"></i> Dashboard </a></li>
+				<li><a href="#/categories"> Manage Categories </a></li>
+				<li><a href="#/products"> Manage Products </a></li>
+			</ul>
+		</div>
+		</nav>
+	</header>
+	<div id="main">
+ 		<div ng-view> </div>
+ 	</div>
+
+ <script src="../bower_components/angular/angular.min.js"> </script>
+ <script src="../bower_components/angular-route/angular-route.min.js"> </script>
+ <script src="../bower_components/jquery/dist/jquery.min.js"> </script>
+ <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"> </script>
+  <!-- <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"> </script>
+ --> <script src="assets/scripts/dirPagination.js"> </script>
+ <script src="assets/scripts/adminApp.js"> </script>
+ 
+</body>
+</html>
+
+ 

@@ -1,16 +1,21 @@
 var express    = require('express')   ;
 var router= express.Router();
 var pool = require('../config/dbconnection');
+var app = express();
+//var moment = require('moment');
+//app.locals.moment = require('moment');
+
+
 
 var categories = {
 	getCategories: function (req, res){
 		pool.getConnection( function(err, conn){
-			conn.query("select * from categories", function(err, results) {
+			conn.query("CALL getAllCategories()", function(err, results) {
 				 if (!err)
 				{
-					res.json( results );
+					res.json( results[0] );
 				}else{
-					console.log('Error while performing the query..check function getCategories() for more details..');
+					console.log('Error while performing the query..check function getCategories() for more details..', err );
 				}
 				conn.release();
 			 });
@@ -18,12 +23,12 @@ var categories = {
 	},
 	getCategoryById: function(req, res){
 		pool.getConnection( function(err, conn){
-			conn.query("select * from categories where id="+req.params.id, function(err, results) {
+			conn.query("CALL getCategoryById("+req.params.id + ")", function(err, results) {
 				 if (!err)
 				{
-					res.json( results[0] );
+					res.json( results[0][0] );
 				}else{
-					console.log('Error while performing the query..check function getCategories() for more details..');
+					console.log('Error while performing the query..check function getCategoryById() for more details..', err );
 				}
 				conn.release();
 			 });
@@ -37,12 +42,12 @@ var categories = {
 		var category = req.body.category;
 		//console.log( category );
 		pool.getConnection( function(err, conn){
-			conn.query("Insert into categories(name, keywords, active, url ) values('"+category.name+"', '"+category.keywords+"', "+category.active+",'"+ category.url +"')", function(err, results) {
+			conn.query("CALL addCategory('"+ category.name +"','"+ category.keywords +"',"+ category.active+ ",'"+ category.url +"')", function(err, results) {
 				 if (!err)
 				{
 					res.json({});
 				}else{
-					console.log('Error while performing the query..check function addNewCategory() for more details..');
+					console.log('Error while performing the query..check function addNewCategory() for more details..', err );
 				}
 				conn.release();
 			 });
@@ -50,12 +55,12 @@ var categories = {
 	},
 	deleteCategory: function(req, res){
 		pool.getConnection( function(err, conn){
-			conn.query("delete from categories where id=" + req.params.id, function(err, results) {
+			conn.query("CALL deleteCategory("+ req.params.id +")", function(err, results) {
 				 if (!err)
 				{
 					res.json({});
 				}else{
-					console.log('Error while performing the query..check function deleteCategory() for more details..');
+					console.log('Error while performing the query..check function deleteCategory() for more details..',err );
 				}
 				conn.release();
 			 });
@@ -67,13 +72,14 @@ var categories = {
 			return;
 		}
 		var category = req.body.category;
+		console.log('category :',category);
 		pool.getConnection( function(err, conn){
-			conn.query("update categories set keywords='"+category.keywords+"', active= "+category.active+"  where id="+category.id, function(err, results) {
+			conn.query("CALL updateCategory("+ category.id +",'"+ category.name +"','"+ category.keywords +"',"+ category.active +",'"+ category.url +"')", function(err, results) {
 				 if (!err)
 				{
 					res.json( results );
 				}else{
-					console.log('Error while performing the query..check function updateCategory() for more details..');
+					console.log('Error while performing the query..check function updateCategory() for more details..',err);
 				}
 				conn.release();
 			 });
@@ -84,12 +90,12 @@ var categories = {
 var products = {
 	getProductList: function (req, res){
 		pool.getConnection( function(err, conn){
-			conn.query("select * from products", function(err, results) {
+			conn.query("CALL getAllProducts()", function(err, results) {
 				 if (!err)
 				{
-					res.json( results );
+					res.json( results[0] );
 				}else{
-					console.log('Error while performing the query..check function getProductList() for more details..');
+					console.log('Error while performing the query..check function getProductList() for more details..', err );
 				}
 				conn.release();
 			 });
@@ -97,12 +103,12 @@ var products = {
 	},
 	getProductById: function (req, res){
 		pool.getConnection( function(err, conn){
-			conn.query("select * from products where id="+req.params.id, function(err, results) {
+			conn.query("CALL getProductById("+ req.params.id +")", function(err, results) {
 				 if (!err)
 				{
-					res.json( results[0] );
+					res.json( results[0][0] );
 				}else{
-					console.log('Error while performing the query..check function getProductById() for more details..');
+					console.log('Error while performing the query..check function getProductById() for more details..',err);
 				}
 				conn.release();
 			 });
@@ -114,14 +120,15 @@ var products = {
 			return;
 		}
 		var product = req.body.product;
-		//console.log( product );
+		console.log( product );
 		pool.getConnection( function(err, conn){
-			conn.query("Insert into products( category_ids, name, SKU, price, quantity, enabled, description, short_description) values('"+product.category_ids+"', '"+product.name+"',' "+product.SKU+"',"+ product.price +","+ product.quantity +","+ product.enabled +",'"+ product.description +"','"+ product.short_description+"')", function(err, results) {
+			
+			conn.query("CALL addProduct('"+ product.name +"','"+ product.SKU+ "',"+ product.price +","+ product.quantity +","+ product.in_stock +",'"+ product.description +"','"+ product.short_description+"','"+ product.valid_from +"','"+ product.valid_till +"')", function(err, results) {
 				 if (!err)
 				{
 					res.json({});
 				}else{
-					console.log('Error while performing the query..check function addNewProduct() for more details..');
+					console.log('Error while performing the query..check function addNewProduct() for more details..',err);
 				}
 				conn.release();
 			 });
@@ -134,7 +141,7 @@ var products = {
 		}
 		var product = req.body.product;
 		//console.log( 'product : ', product );
-		var Query = "update products set category_ids='"+product.category_ids+"', name='"+ product.name +"', SKU='"+ product.SKU +"', price="+ product.price +",quantity="+ product.quantity +",enabled="+ product.enabled +",description='"+ product.description +"',short_description='"+ product.short_description +"' where id=" +product.id;
+		var Query = "CALL updateProduct("+ product.id +","+ product.name +","+ product.SKU +","+ product.price +","+ product.quantity +","+ product.in_stock +","+ product.description +","+ product.short_description +","+ product.valid_from +","+ product.valid_till +")";
 		
 		//console.log('Query :',Query);
 		pool.getConnection( function(err, conn){
@@ -143,7 +150,7 @@ var products = {
 				{
 					res.json( results );
 				}else{
-					console.log('Error while performing the query..check function updateProduct() for more details..');
+					console.log('Error while performing the query..check function updateProduct() for more details..',err);
 				}
 				conn.release();
 			 });
@@ -151,12 +158,12 @@ var products = {
 	},
 	deleteProduct: function(req, res){
 		pool.getConnection( function(err, conn){
-			conn.query("delete from products where id=" + req.params.id, function(err, results) {
+			conn.query("CALL deleteProduct("+ req.params.id +")", function(err, results) {
 				 if (!err)
 				{
 					res.json({});
 				}else{
-					console.log('Error while performing the query..check function deleteProduct() for more details..');
+					console.log('Error while performing the query..check function deleteProduct() for more details..',err);
 				}
 				conn.release();
 			 });
