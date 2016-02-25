@@ -78,14 +78,15 @@ CREATE PROCEDURE addProduct
 	in_stock BOOLEAN, 
 	description TEXT, 
 	short_description TEXT,
-	date_added DATE,
 	valid_from DATE,
 	valid_till DATE
 )
 BEGIN
-	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till );
+	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, 'SELECT CURDATE()', valid_from, valid_till );
 END //
 DELIMITER ;
+
+
 
 
 

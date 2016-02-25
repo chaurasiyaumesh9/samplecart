@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2016 at 08:57 PM
+-- Generation Time: Feb 25, 2016 at 09:15 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -37,12 +37,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addProduct`(
 	in_stock BOOLEAN, 
 	description TEXT, 
 	short_description TEXT,
-	date_added DATE,
 	valid_from DATE,
 	valid_till DATE
 )
 BEGIN
-	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till );
+	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, 'SELECT CURDATE()', valid_from, valid_till );
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addProductCategories`( 
@@ -171,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `valid_till` date DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `products`
@@ -187,8 +186,7 @@ INSERT INTO `products` (`id`, `name`, `SKU`, `price`, `quantity`, `in_stock`, `d
 (7, 'Incraze Hand-held Bag(White)', 'EOYI63441LY65', '999.00', 35, 1, 'Presenting From The House Of Incraze, Stylish Handbags That Are Designed For Casual Purpose. This One Exhibits The Preferences Of The Modern Indian Women Due To Its Captivating Design.', 'Presenting From The House Of Incraze, Stylish Handbags That Are Designed For Casual Purpose. This One Exhibits The Preferences Of The Modern Indian Women Due To Its Captivating Design.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
 (8, 'Rosemary Hand-held Bag(Pink With Blue)', 'SSEE90455WQ18', '1249.00', 28, 1, 'This handbag is made of beautiful non leather tote in traditional methods in order to maintain it soft feel. This handbag is a must-have for women,who prefer stylish handbag, featuring enough room to carry your essentials easily,this non-leather handbag i', 'This handbag is made of beautiful non leather tote in traditional methods in order to maintain it soft feel.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
 (9, 'Durian DOM/58601 Solid Wood King Bed(Finish Color - High Quality Glossy Polish)', 'LBXR20850AR66', '48000.00', 6, 1, 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom. :: Neatly presented with contemporary styling, the Wooden Bed features a sumptuous high slatted headboard with a complimenting low foot end that is perfect for creating a sense of space within your room.', 'Wooden Slatted Bed is elegantly presented with its clean, crisp lines and beautiful detailing that will enhance the look and feel of your bedroom.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
-(10, 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', '2016-01-01', '2016-01-01', '2022-12-31', 0),
-(13, 'TEST', 'test1', '6789.00', 34, 1, 'werwer', 'werwer', '2016-02-25', '2016-02-24', '2018-02-24', 0);
+(10, 'Durian Berry Solid Wood 2 Seater Sofa(Finish Color - DARK BROWN)', 'CWJG63147HV44', '56400.00', 3, 1, 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', 'The classic English roll arm,dropping arm and plush sink-in comfort are the features that adorn this sofa.', '2016-01-01', '2016-01-01', '2022-12-31', 0);
 
 -- --------------------------------------------------------
 

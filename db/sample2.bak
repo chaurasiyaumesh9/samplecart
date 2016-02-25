@@ -78,14 +78,15 @@ CREATE PROCEDURE addProduct
 	in_stock BOOLEAN, 
 	description TEXT, 
 	short_description TEXT,
-	date_added DATE,
 	valid_from DATE,
 	valid_till DATE
 )
 BEGIN
-	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till );
+	INSERT INTO products( name, SKU, price, quantity,in_stock, description,short_description, date_added, valid_from, valid_till) values( name, SKU, price, quantity,in_stock, description,short_description, SELECT CURDATE(), valid_from, valid_till );
 END //
 DELIMITER ;
+
+
 
 
 
@@ -137,7 +138,7 @@ DELIMITER //
 CREATE PROCEDURE updateProduct( pid INT, pname VARCHAR(255), pSKU VARCHAR(255), pprice DECIMAL(10,2), pquantity INT, pin_stock BOOLEAN, pdescription TEXT, pshort_description TEXT, pvalid_from DATE, pvalid_till DATE  )
 BEGIN
 	UPDATE products SET name = pname, SKU = pSKU, price = pprice, quantity = pquantity, in_stock = pin_stock, description = pdescription, short_description = pshort_description,
-	valid_from = pvalid_from, valid_till = pvalid_till where id = cid;
+	valid_from = pvalid_from, valid_till = pvalid_till where id = pid;
 END //
 DELIMITER ;
 
